@@ -5,7 +5,7 @@ To have a Production environment - which is Heroku -, a staging environment - wh
 #### The setup
 The project will have two remotes addresses : github [origin] and heroku [heroku].
 
-Heroku uses their own CLI which is installed like a dependency package with `npm i heroku`.
+Heroku uses their own CLI which is installed like a dependency package with `npm i -g heroku`.
 1. `heroku login`
 2. `heroku create [new-name]` > prompt [website-address] | [heroku-address.git]
 3. `git add remote heroku [heroku-address.git]`
