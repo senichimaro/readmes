@@ -1,29 +1,30 @@
-# Mongo Real
-
-0. Section "BUILD"
-1. 3rd Party Services (renamed HTTPS Endpoints)
-2. Add a Service : HTTP
-3. Service Name
-4. Add Incoming Webhook
-5. Name (endpoint name)
-6. Select HTTP Method
-7. url : "webhook URL"
-
-
-## POST
-Special for Mongo Real we have to parse `payload.body.text()` from EJSON (like JSON with extra data) to get the data.
+# Mongo Realm
+Simple example for react with `realm-web` library based in anonimous authentication. It's works over only one realm user and always use the same credetials to any operation.
+1. set id
+2. load credentials for anonimous interactions
+3. log in
+4. connect to mongodb
+5. locate database & table
+6. perform operation (create, read, update or delete)
 ```
-const body = EJSON.parse(payload.body.text())
-# now we can use the variable 'body' as an regular object.
-
-const myCollection = context.services.get("mongodb-atlas").db("crud-panel").collection("dummy-user");
-# now we are connected to the database and the target collection
-
-const userData = {
-    name: body.name,
-    userID: body.userID,
-    text: body.text
-}
-
-return await myCollection.insertOne(userData);
+const buttonCall = async (event) => {
+        event.preventDefault();
+        const data = {
+            media_type: event.target.value,
+            movieID: event.target.id,
+            userID: "9"
+        }
+        // 1.
+        const app = await new Realm.App({ id: "crud-panel-backend-ytuar" });
+        // 2.
+        const credentials = await Realm.Credentials.anonymous();
+        // 3.
+        const user = await app.logIn(credentials);
+        // 4.
+        const mongodb = await app.currentUser.mongoClient('mongodb-atlas')
+        // 5.
+        const tasksCollection = await mongodb.db('crud-panel').collection('dummy-user')
+        // 6.
+        const insertResult = await tasksCollection.insertOne(data)
+    }
 ```
